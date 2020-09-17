@@ -323,7 +323,6 @@ private:
 public:
     T temp;
     Stack() {
-        // https://www.techiedelight.com/stack-implementation-in-cpp/
     }
     
     Stack(Stack<T> const& stack) {
