@@ -13,6 +13,10 @@
 
 #include <iostream>
 
+// TODO: Potentially change references (&) to rvalue references (&&)
+// TODO: Refactor stack class to use vector
+// TODO: Delete prints
+
 namespace ostl {
 template<int x, class T>
 struct PairStorage {
@@ -120,7 +124,7 @@ template<class T, class A = std::allocator<T>>
 class Vector {
 public:
     typedef T* Iterator;
-    
+
 private:
     T* ts;
     A allocator;
@@ -270,15 +274,20 @@ public:
     }
 
     Iterator erase(const Iterator position) {
+        Iterator previous = position-1;
         for(Iterator i = position+1; i != end(); ++i) {
             *(i-1) = *i;
         }
         --sizeV;
+
+        // TODO: Check that using the documentation
+        ++previous;
+        return previous;
     }
 
     Iterator erase(const Iterator first, const Iterator last) {
         unsigned long long size = 0;
-
+        Iterator previous = first-1;
         for(Iterator i = first; i != last; ++i) {
             ++size;
         }
@@ -300,6 +309,9 @@ public:
         delete ts;
 
         ts = newTs;
+
+        // TODO: Check that using the documentation
+        return ++previous;
     }
 
 private:
@@ -382,7 +394,6 @@ class Tuple: public TupleStorage<0, Ts...>  {
 public:
     Tuple(Ts... ts): TupleStorage<0, Ts...>(ts...) {
         std::cout << "Ctor 2" << std::endl;
-        //Tuple(ts...);
     }
     
     ~Tuple() {
@@ -404,45 +415,169 @@ public:
 };
 
 template<class T>
-struct Node {
+class Node {
     T data;
     Node<T>* next;
     Node<T>* previous;
+
+public:
+    Node() {
+        next = nullptr;
+        previous = nullptr;
+    }
+
+    Node(T data) {
+        this->data = data;
+    }
+
+    Node(Node<T>& node) {
+        data = node.data;
+        next = node.next;
+        previous = node.previous;
+    }
+
+    ~Node() {
+    }
+
+    void setData(T data) {
+        this->data = data;
+    }
+
+    void setNext(Node<T>* node) {
+        next = node;
+    }
+
+    void setPrevious(Node<T>* node) {
+        previous = node;
+    }
+
+    T getData() {
+        return data;
+    }
+
+    Node<T>* getNext() {
+        return next;
+    }
+
+    Node<T>* getPrevious() {
+        return previous;
+    }
 };
 
 template<class T>
-class LinkedList {
+class List { // or in other words a DoublyLinkedList
 private:
+    // Beginning of the list
     Node<T>* head;
+
+    // Last element of the list
     Node<T>* tail;
+
+    // Size of the list
+    unsigned long long sizeV;
 public:
-    LinkedList() {
-        //https://www.geeksforgeeks.org/data-structures/linked-list/
-        //https://www.codesdope.com/blog/article/c-linked-lists-in-c-singly-linked-list/
+
+    // Schema of Doubly linked list
+    // head ---> Previous Nodes ---> tail
+
+    // head <--- Next Nodes <--- tail
+
+    List() {
+        head = nullptr;
+        tail = nullptr;
+        sizeV = 0;
     }
     
-    LinkedList(LinkedList<T> const& linkedList) {
+    List(List<T> const& List) {
 
     }
+
+    ~List() {
+
+    }
+
+    void pushFront(const T& t) {
+        pushFront(t);
+    }
+
+    void pushFront(T&& t) {
+        pushFront(t);
+    }
+
+    // Put data in a new node as the new head
+    void pushFront(T data) {
+        Node<T>* t = new Node<T>(data);
+
+        ++sizeV;
+
+        if(head == nullptr) {
+            tail = t;
+        } else {
+            t->setPrevious(head);
+            head->setNext(t);
+        }
+
+        head = t;
+    }
+
+    // Put data in a new node as the new tail
+    void pushBack(T data) {
+        Node<T>* t = new Node<T>(data);
+
+        ++sizeV;
+
+        if(tail == nullptr) {
+            head = t;
+        } else {
+            t->setNext(tail);
+            tail->setPrevious(t);
+        }
+
+        tail = t;
+    }
+
+    void popFront() {
+        Node<T>* temp = head;
+
+        if(head == nullptr) {
+            return;
+        } else if(head == tail) {
+            head = nullptr;
+            tail = nullptr;
+        } else {
+            head = temp->getPrevious();
+            temp->setPrevious(nullptr);
+        }
+
+        --sizeV;
+        delete temp;
+    }
+
+    void popBack() {
+        Node<T>* temp = head;
+
+        if(tail == nullptr) {
+            return;
+        } else if(head == tail) {
+            head = nullptr;
+            tail = nullptr;
+        } else {
+            tail = temp->getNext();
+            temp->setNext(nullptr);
+        }
+
+        --sizeV;
+        delete temp;
+    }
+
+    unsigned long long size() {
+        return sizeV;
+    }
+
 };
 
 template<class T>
-class DoublyLinkedList {
-private:
-    Node<T>* head;
-    Node<T>* tail;
-public:
-    DoublyLinkedList() {
-
-    }
-    
-    DoublyLinkedList(LinkedList<T> const& linkedList) {
-
-    }
-};
-
-template<class T>
-class CircularLinkedList {
+class CircularLinkedList { // just for the fun of implementing it
 private:
     Node<T>* head;
     Node<T>* tail;
@@ -451,7 +586,7 @@ public:
 
     }
     
-    CircularLinkedList(LinkedList<T> const& linkedList) {
+    CircularLinkedList(CircularLinkedList<T> const& CircularlinkedList) {
 
     }
 };
@@ -459,107 +594,55 @@ public:
 template<class T>
 class Stack {
 private:
-    typedef T* Iterator;
+    Vector<T> vector;
 
-    T* ts;
-
-    unsigned long long sizeV;
-    unsigned long long memorySize;
 public:
-    T temp;
     Stack() {
-
+        vector = Vector<T>();
     }
     
     Stack(Stack<T> const& stack) {
-        ts = new T[sizeV];
-
-        memorySize = stack.memorySize;
-        sizeV = stack.size;
-
-        for(int i = 0; i < sizeV; ++i) {
-            ts[i] = stack.ts[i];
-        }
+        vector = stack.vector;
     }
 
     Stack(size_t size) {
-        ts = new T[size];
-        memorySize = size;
-        sizeV = size;
+        vector = Vector<T>(size);
     }
 
     ~Stack() {
-        delete ts;
     }
 
     bool empty() const {
-        return sizeV == 0;
+        return vector.empty();
     }
 
     
     void push(T& t) {
-        reallocOnTest(memorySize);
-        ts[sizeV++] = t;
+        vector.pushBack(t);
     }
 
     void push(const T& t) {
-        reallocOnTest(memorySize);
-        ts[sizeV++] = t;
+        vector.pushBack(t);
     }
 
     T& top() {
-        return ts[sizeV-1];
+        return vector[vector.size()-1];
     }
 
     const T& top() const {
-        return ts[sizeV-1];
+        return vector[vector.size()-1];
     }
 
     void pop() {
-        --sizeV;
+        vector.popBack();
     }
 
     unsigned long long size() {
-        return sizeV;
+        return vector.size();
     }
 
     void swap(Stack& stack) noexcept {
-        unsigned long long sizeVTemp = stack.sizeV;
-        unsigned long long memorySizeTemp = stack.memorySize;
-        T* temp = stack.ts;
-
-        stack.ts = ts;
-        stack.sizeV = sizeV;
-        stack.memorySize = memorySize;
-
-        ts = temp;
-        sizeV = sizeVTemp;
-        memorySize = memorySizeTemp;
-    }
-
-private:
-
-    void realloc(unsigned long long size) {
-        T* tsNew = new T[size];
-
-        unsigned long long smallest = size < sizeV ? size: sizeV;
-
-        for(int i = 0; i < smallest; ++i) {
-            tsNew[i] = ts[i];
-        }
-
-        // FIXME TODO Check if ts null
-        delete ts;
-
-        ts = tsNew;
-    }
-
-    void reallocOnTest(unsigned long long size) {
-        if(sizeV == size) {
-            size *= 2;
-
-            realloc(size);
-        }
+        vector.swap(stack.vector);
     }
 };
 
