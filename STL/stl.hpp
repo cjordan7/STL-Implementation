@@ -14,7 +14,6 @@
 #include <iostream>
 
 // TODO: Potentially change references (&) to rvalue references (&&)
-// TODO: Refactor stack class to use vector
 // TODO: Delete prints
 
 namespace ostl {
@@ -120,23 +119,20 @@ void swap(Pair<T1, T2>& pairOne, Pair<T1, T2>& pairTwo) {
     pairTwo.second = tempSecond;
 }
 
-template<class T, class A = std::allocator<T>>
+template<class T>
 class Vector {
 public:
     typedef T* Iterator;
 
 private:
     T* ts;
-    A allocator;
     unsigned long long sizeV;
     unsigned long long memorySize;
 
 public:
 
     Vector() {
-        ts = new T[1];
-        sizeV = 0;
-        memorySize = 1;
+        createNewVector();
     }
     
     Vector(size_t size) {
@@ -164,7 +160,43 @@ public:
     ~Vector() {
         delete ts;
     }
-    
+
+    Vector<T>& operator=(const Vector<T>& rhs) {
+        sizeV = rhs.sizeV;
+        memorySize = rhs.memorySize;
+
+        delete ts;
+
+        ts = new T[memorySize];
+
+        for(int i = 0; i < sizeV; ++i) {
+            ts[i] = rhs[i];
+        }
+
+        return *this;
+    }
+
+    Vector<T>& operator=(Vector<T>&& vector) {
+        *this = vector;
+        return *this;
+    }
+
+    Vector<T>& operator=(std::initializer_list<T> il) {
+        sizeV = il.size();
+        memorySize = sizeV;
+
+        delete ts;
+
+        ts = new T[memorySize];
+
+        for(int i = 0; i < sizeV; ++i) {
+            ts[i] = il[i];
+        }
+
+        return *this;
+    }
+
+
     void reserve(size_t memorySize) {
         ts = new T[memorySize];
         sizeV = 0;
@@ -235,6 +267,10 @@ public:
         return ts[i];
     }
 
+    const T& operator[](int i) const {
+        return ts[i];
+    }
+
     void pushBack(T t) {
         reallocOnTest(memorySize);
 
@@ -265,6 +301,17 @@ public:
         return memorySize;
     }
 
+    Iterator insert(const Iterator position, const T& t) {
+        reallocOnTest(sizeV++);
+
+        for(Iterator i = end(); i != position; --i) {
+            *(i+1) = *i;
+        }
+
+        *position = t;
+
+        return position;
+    }
     Iterator begin() {
         return ts;
     }
@@ -314,7 +361,20 @@ public:
         return ++previous;
     }
 
+    void clear() noexcept {
+        delete ts;
+
+        createNewVector();
+    }
+
 private:
+    void createNewVector() {
+        sizeV = 0;
+        memorySize = 1;
+
+        ts = new T[memorySize];
+    }
+
     void realloc(unsigned long long size) {
         T* tsNew = new T[size];
 
@@ -574,21 +634,8 @@ public:
         return sizeV;
     }
 
-};
+    // TODO Implement other functions of List
 
-template<class T>
-class CircularLinkedList { // just for the fun of implementing it
-private:
-    Node<T>* head;
-    Node<T>* tail;
-public:
-    CircularLinkedList() {
-
-    }
-    
-    CircularLinkedList(CircularLinkedList<T> const& CircularlinkedList) {
-
-    }
 };
 
 template<class T>
@@ -646,38 +693,186 @@ public:
     }
 };
 
-
 template<class T>
-class StackLinkedList {
+class Deque {
+// TODO Implement a more efficent Deque
 private:
+    Vector<T> vector;
 public:
-    
-};
+    typedef T* Iterator;
 
+    Deque() {
+        vector = Vector<T>();
+    }
+    
+    Deque(Deque<T> const& deque) {
+        *this = deque;
+    }
+
+    Deque<T>& operator=(const Deque& deque) {
+        this->vector = deque.vector;
+
+        return *this;
+    }
+
+    Deque<T>& operator=(Deque&& deque) {
+        this->vector = deque.vector;
+        return *this;
+    }
+
+    Deque<T>& operator=(std::initializer_list<T> il) {
+        this->vector = il;
+        return *this;
+    }
+
+    unsigned long long size() const noexcept {
+        return vector.size();
+    }
+
+    void resize(unsigned long long size) {
+        vector.resize(size);
+    }
+
+    bool empty() const noexcept {
+        return vector.empty();
+    }
+
+    void shrinkToFit() {
+        vector.shrinkToFit();
+    }
+
+    T& operator[](int i) {
+        return vector[i];
+    }
+
+    const T& operator[](int i) const {
+        return vector[i];
+    }
+
+    T& front() {
+        return vector[0];
+    }
+
+    const T& front() const {
+        return vector[0];
+    }
+
+    T& back() {
+        return vector[vector.size()-1];
+    }
+
+    const T& back() const {
+        return vector[vector.size()-1];
+    }
+
+    void pushBack(const T& t) {
+        vector.pushBack(t);
+    }
+
+    void pushBack(T&& t) {
+        vector.pushBack(t);
+    }
+
+    void pushFront(const T& t) {
+        vector.insert(0, t);
+    }
+
+    void pushFront(T&& t) {
+        vector.insert(vector.begin(), t);
+    }
+
+    void popBack() {
+        vector.popBack();
+    }
+
+    void popFront() {
+        vector.erase(vector.begin());
+    }
+
+    Iterator insert(const Iterator position, const T& t) {
+        vector.insert(position, t);
+
+        //add the other inserts
+    }
+
+    Iterator erase(const Iterator position) {
+        return vector.erase(position);
+    }
+
+    Iterator erase(const Iterator first, const Iterator last) {
+        return vector.erase(first, last);
+    }
+
+    void swap(Deque& deque) {
+        vector.swap(deque.vector);
+    }
+
+    void clear() noexcept {
+        vector.clea();
+    }
+};
 
 template<class T>
 class Queue {
+private:
+    Deque<T> deque;
 public:
     Queue() {
-
+        deque = Deque<T>();
     }
-    
+
     Queue(Queue<T> const& queue) {
-
+        deque = queue.deque;
     }
+
+    unsigned long long size() const {
+        return deque.size();
+    }
+
+    bool empty() const {
+        return deque.empty();
+    }
+
+    T& front() {
+        return deque.front();
+    }
+
+    const T& front() const {
+        return deque.front();
+    }
+
+    T& back() {
+        return deque.back();
+    }
+
+    const T& back() const {
+        return deque.back();
+    }
+
+    void push(const T& t) {
+        deque.pushBack(t);
+    }
+
+    void push(T&& t) {
+        deque.pushBack(t);
+    }
+
+    void pop() {
+        deque.popBack();
+    }
+
+    void swap(Queue& queue) noexcept {
+        deque.swap(queue.deque);
+    }
+
 };
 
 template<class T>
-class Dequeue {
-public:
-    Dequeue() {
-    }
-    
-    Dequeue(Dequeue<T> const& dequeue) {
+class Set {
 
-    }
 };
 
-}
+
+} /* namespace ostl */
 
 #endif /* stl_hpp */
