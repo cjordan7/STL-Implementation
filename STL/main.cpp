@@ -10,6 +10,7 @@
 #include <utility>
 
 #include <vector>
+#include <string>
 
 #include "stl.hpp"
 //#include <tuple>
@@ -27,9 +28,13 @@ int main(int argc, const char * argv[]) {
     
     // std::cout << pair << std::endl;
     // std::cout << pair2 << std::endl;
-    std::cout << ostl::get<0>(pair) << std::endl;
-    std::cout << ostl::get<1>(pair) << std::endl;
-    //std::tuple<int, int, int> tuple(1, 2, 3);
+    ostl::Tuple<int, std::string, int, int, int> t11(1, "Hi", 3, 5, 7);
+
+    std::cout << ostl::get<1>(t11) << std::endl;
+    std::cout << ostl::get<2>(t11) << std::endl;
+    std::cout << ostl::get<3>(t11) << std::endl;
+    std::cout << ostl::get<4>(t11) << std::endl;
+    std::cout << ostl::get<5>(t11) << std::endl;
 
     ostl::Tuple<int> d(1);
     std::cout << "Hello, World!\n";

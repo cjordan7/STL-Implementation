@@ -89,7 +89,7 @@ struct Pair: PairStorage<0, T1>, PairStorage<1, T2> {
         os << '(' << pair.first << ", "<< pair.second << ')';
         return os;
     }
-   
+
     Pair swap(Pair<T1, T2>& pair) {
         T1 tempFirst = first;
         T2 tempSecond = second;
@@ -119,32 +119,25 @@ void swap(Pair<T1, T2>& pairOne, Pair<T1, T2>& pairTwo) {
 template<class T, class A = std::allocator<T>>
 class Vector {
 public:
-    class Iterator {
-    private:
-        T* current;
-    
-    public:
-        T* begin();
-        T* end();
-    };
+    typedef T* Iterator;
     
 private:
     T* ts;
     A allocator;
-    unsigned long long size;
+    unsigned long long sizeV;
     unsigned long long memorySize;
 
 public:
 
     Vector() {
         ts = new T[1];
-        size = 0;
+        sizeV = 0;
         memorySize = 1;
     }
     
     Vector(size_t size) {
         ts = new T[size];
-        this->size = size;
+        this->sizeV = size;
         memorySize = size;
     }
     
@@ -152,7 +145,7 @@ public:
         size_t size = sizeof(ts);
         this->ts = new T[size];
         
-        this->size = size;
+        this->sizeV = size;
         memorySize = size;
         
         for(int i = 0; i < size; ++i) {
@@ -169,29 +162,177 @@ public:
     }
     
     void reserve(size_t memorySize) {
-    
+        ts = new T[memorySize];
+        sizeV = 0;
+        this->memorySize = memorySize;
     }
-    
+
+    void resize(unsigned long long n) {
+        realloc(n);
+
+        memorySize = n;
+    }
+
+    void shrinkToFit() {
+        if(memorySize > sizeV) {
+            realloc(sizeV);
+        }
+        memorySize = sizeV;
+    }
+
+    T& at(unsigned long long i) {
+        testOutOfBounds(i);
+        return ts[i];
+    }
+
+    const T& at(unsigned long long i) const {
+        //testOutOfBounds(i);
+        return at(i);
+    }
+
+    T& front() {
+        return ts[0];
+    }
+
+    const T& front() const {
+        return front();
+    }
+
+    T* data() noexcept {
+        return ts;
+    }
+
+    const T* data() const noexcept {
+        return data();
+    }
+
+    void swap(Vector& vector) {
+        T* temp = vector.ts;
+        unsigned long long sizeVTemp = vector.sizeV;
+        unsigned long long memorySizeTemp = vector.memorySize;
+
+        vector.ts = ts;
+        vector.sizeV = sizeV;
+        vector.memorySize = memorySize;
+
+        sizeV = sizeVTemp;
+        memorySize = memorySizeTemp;
+    }
+
+    T& back() {
+        return ts[sizeV];
+    }
+
+    const T& back() const {
+        return back();
+    }
+
+    T& operator[](int i) {
+        return ts[i];
+    }
+
     void pushBack(T t) {
-        //this->size = size;
-        //memorySize = size;
-        
-        if(size == memorySize) {
-            memorySize *= 2;
+        reallocOnTest(memorySize);
+
+        ts[sizeV++] = t;
+    }
+
+    void pushBack(const T& t) {
+        reallocOnTest(memorySize);
+
+        ts[sizeV++] = t;
+    }
+
+    void popBack() {
+        if(sizeV > 0) {
+            --sizeV;
         }
     }
-    
-    void pushBack(const T& t) {
-    
+
+    bool empty() {
+        return sizeV == 0;
     }
-    
-    void popBack(T t) {
-    
+
+    unsigned long long size() {
+        return sizeV;
     }
-    
-    void popBack(const T& t) {
-    
+
+    unsigned long long capacity() {
+        return memorySize;
     }
+
+    Iterator begin() {
+        return ts;
+    }
+
+    Iterator end() {
+        return ts+sizeV;
+    }
+
+    Iterator erase(const Iterator position) {
+        for(Iterator i = position+1; i != end(); ++i) {
+            *(i-1) = *i;
+        }
+        --sizeV;
+    }
+
+    Iterator erase(const Iterator first, const Iterator last) {
+        unsigned long long size = 0;
+
+        for(Iterator i = first; i != last; ++i) {
+            ++size;
+        }
+
+        T* newTs = new T[sizeV-size];
+
+        Iterator newIt = newTs;
+
+        for(Iterator i = begin(); i != first; ++i, ++newIt) {
+            *newIt = *i;
+        }
+
+        newIt = last;
+
+        for(Iterator i = last; i != end(); ++i, ++newIt) {
+            *newIt = *i;
+        }
+
+        delete ts;
+
+        ts = newTs;
+    }
+
+private:
+    void realloc(unsigned long long size) {
+        T* tsNew = new T[size];
+
+        unsigned long long smallest = size < sizeV ? size: sizeV;
+
+        for(int i = 0; i < smallest; ++i) {
+            tsNew[i] = ts[i];
+        }
+
+        // FIXME TODO Check if ts null
+        delete ts;
+
+        ts = tsNew;
+    }
+
+    // FIXME: REFACTOR THAT
+    void reallocOnTest(unsigned long long size) {
+        if(sizeV == size) {
+            size *= 2;
+
+            realloc(size);
+        }
+    }
+
+    void testOutOfBounds(unsigned long long i) {
+        if(i > sizeV) {
+            throw std::out_of_range("Out of bounds");
+        }
+    }
+
 };
 
 template<size_t I, class T>
@@ -216,15 +357,14 @@ T const& get(TupleStorageUnique<N, T> const& tupleStorage) {
 }
 
 template<size_t I, class T, class... Ts>
-class TupleStorage: public TupleStorageUnique<I+1, T>, public TupleStorage<I+2, Ts...>  {
+class TupleStorage: public TupleStorageUnique<I+1, T>, public TupleStorage<I+1, Ts...>  {
 public:
     T data;
-    TupleStorage(T t): TupleStorageUnique<I + 1, T>(t) {
+    TupleStorage(T t): TupleStorageUnique<I+1, T>(t) {
 
     }
 
-    TupleStorage(T t, Ts... ts): TupleStorage<I+2, Ts...>(ts...),
-     TupleStorage<I+1, T>(ts...) {
+    TupleStorage(T t, Ts... ts): TupleStorageUnique<I+1, T>(t), TupleStorage<I+1, Ts...>(ts...) {
         this->data = t;
     }
 };
@@ -238,7 +378,7 @@ public:
 };
 
 template<class... Ts>
-class Tuple: TupleStorage<0, Ts...>  {
+class Tuple: public TupleStorage<0, Ts...>  {
 public:
     Tuple(Ts... ts): TupleStorage<0, Ts...>(ts...) {
         std::cout << "Ctor 2" << std::endl;
@@ -250,7 +390,7 @@ public:
 };
 
 template<class T>
-class Tuple<T>: TupleStorageUnique<0, T> {
+class Tuple<T>: public TupleStorageUnique<0, T> {
 public:
     Tuple(T t): TupleStorageUnique<0, T>(t) {
         std::cout << "Ctor 1" << std::endl;
@@ -282,7 +422,7 @@ public:
     }
     
     LinkedList(LinkedList<T> const& linkedList) {
-    
+
     }
 };
 
@@ -293,11 +433,11 @@ private:
     Node<T>* tail;
 public:
     DoublyLinkedList() {
-    
+
     }
     
     DoublyLinkedList(LinkedList<T> const& linkedList) {
-    
+
     }
 };
 
@@ -308,69 +448,118 @@ private:
     Node<T>* tail;
 public:
     CircularLinkedList() {
-    
+
     }
     
     CircularLinkedList(LinkedList<T> const& linkedList) {
-    
+
     }
 };
 
 template<class T>
 class Stack {
 private:
+    typedef T* Iterator;
+
     T* ts;
+
+    unsigned long long sizeV;
+    unsigned long long memorySize;
 public:
     T temp;
     Stack() {
+
     }
     
     Stack(Stack<T> const& stack) {
-    
+        ts = new T[sizeV];
+
+        memorySize = stack.memorySize;
+        sizeV = stack.size;
+
+        for(int i = 0; i < sizeV; ++i) {
+            ts[i] = stack.ts[i];
+        }
     }
-    
-//    Stack(Dequeue<T> dequeue) {
-//
-//    }
-//
-//    Stack(Queue<T> queue) {
-//
-//    }
-    
-    Stack(T* ts) {
-    
-    }
-    
-    Stack(Vector<T> vector) {
-    
-    }
-    
+
     Stack(size_t size) {
-    
+        ts = new T[size];
+        memorySize = size;
+        sizeV = size;
     }
-    
-    void push(T t) {
-    
+
+    ~Stack() {
+        delete ts;
     }
-    
-    T pop() {
-        return temp;
+
+    bool empty() const {
+        return sizeV == 0;
     }
+
     
-    T peek() {
-        return temp;
+    void push(T& t) {
+        reallocOnTest(memorySize);
+        ts[sizeV++] = t;
     }
-    
-    T size() {
-        return temp;
+
+    void push(const T& t) {
+        reallocOnTest(memorySize);
+        ts[sizeV++] = t;
     }
-    
-    bool isEmpty() {
-        return false;
+
+    T& top() {
+        return ts[sizeV-1];
     }
-    
-    bool isFull() {
-        return false;
+
+    const T& top() const {
+        return ts[sizeV-1];
+    }
+
+    void pop() {
+        --sizeV;
+    }
+
+    unsigned long long size() {
+        return sizeV;
+    }
+
+    void swap(Stack& stack) noexcept {
+        unsigned long long sizeVTemp = stack.sizeV;
+        unsigned long long memorySizeTemp = stack.memorySize;
+        T* temp = stack.ts;
+
+        stack.ts = ts;
+        stack.sizeV = sizeV;
+        stack.memorySize = memorySize;
+
+        ts = temp;
+        sizeV = sizeVTemp;
+        memorySize = memorySizeTemp;
+    }
+
+private:
+
+    void realloc(unsigned long long size) {
+        T* tsNew = new T[size];
+
+        unsigned long long smallest = size < sizeV ? size: sizeV;
+
+        for(int i = 0; i < smallest; ++i) {
+            tsNew[i] = ts[i];
+        }
+
+        // FIXME TODO Check if ts null
+        delete ts;
+
+        ts = tsNew;
+    }
+
+    void reallocOnTest(unsigned long long size) {
+        if(sizeV == size) {
+            size *= 2;
+
+            realloc(size);
+        }
     }
 };
 
@@ -387,11 +576,11 @@ template<class T>
 class Queue {
 public:
     Queue() {
-    
+
     }
     
     Queue(Queue<T> const& queue) {
-    
+
     }
 };
 
@@ -402,7 +591,7 @@ public:
     }
     
     Dequeue(Dequeue<T> const& dequeue) {
-    
+
     }
 };
 
