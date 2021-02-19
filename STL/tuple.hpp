@@ -1,30 +1,23 @@
 //
-//  stl.hpp
+//  Tupple.hpp
 //  STL
 //
-//  Created by Cosme Jordan on 26.08.20.
-//  Copyright © 2020 Cosme Jordan. All rights reserved.
+//  Created by Cosme Jordan on 19.02.21.
+//  Copyright © 2021 Cosme Jordan. All rights reserved.
 //
 
-#ifndef stl_hpp
-#define stl_hpp
+#ifndef tuple_hpp
+#define tuple_hpp
 
 #include <stdio.h>
-
 #include <iostream>
 #include <memory>
-
-// TODO: Potentially change references (&) to rvalue references (&&)
-// TODO: Delete prints
-
-// TODO: Check that every functions are in sync with C++11
-// TODO: Change the way I initialize paramaeters in the constructor
 
 namespace ostl {
 template<int x, class T>
 struct PairStorage {
     T data;
-    
+
     PairStorage(T t) {
         this->data = t;
     }
@@ -40,58 +33,53 @@ T const& get(PairStorage<N, T> const& pairStorage) {
     return pairStorage.data;
 }
 
-//template<int N, class T>
-//T const& get(PairStorage<N, T> const& pairStorage) {
-//    return pairStorage.data;
-//}
-
 template<class T1, class T2>
 struct Pair: PairStorage<0, T1>, PairStorage<1, T2> {
     T1 first;
     T2 second;
-    
+
     Pair() {
     }
-    
+
     Pair(T1 t1, T2 t2): PairStorage<0, T1>(t1), PairStorage<1, T2>(t2) {
         first = t1;
         second = t2;
     }
-    
+
     Pair(const Pair<T1, T2>& p): PairStorage<0, T1>(p.first), PairStorage<1, T2>(p.second) {
         first = p.first;
         second = p.second;
     }
-    
+
     Pair operator=(const Pair<T1,T2> & pair) {
         first = pair.first;
         second = pair.second;
         return *this;
     }
-    
+
     bool operator==(const Pair<T1,T2>& pair) {
         return first == pair.first and second == pair.second;
     }
-    
+
     bool operator!=(const Pair<T1,T2>& pair) {
         return !(*this==pair);
     }
-    
+
     bool operator<(const Pair<T1,T2>& pair) {
         return first < pair.first and second < pair.second;
     }
     bool operator<=(const Pair<T1,T2>& pair) {
         return first <= pair.first and second <= pair.second;
     }
-    
+
     bool operator>(const Pair<T1,T2>& pair) {
         return first > pair.first and second > pair.second;
     }
-    
+
     bool operator>=(const Pair<T1,T2>& pair) {
         return first >= pair.first and second >= pair.second;
     }
-    
+
     friend std::ostream& operator<<(std::ostream& os, const Pair<T1, T2>& pair) {
         os << '(' << pair.first << ", "<< pair.second << ')';
         return os;
@@ -100,13 +88,13 @@ struct Pair: PairStorage<0, T1>, PairStorage<1, T2> {
     Pair swap(Pair<T1, T2>& pair) {
         T1 tempFirst = first;
         T2 tempSecond = second;
-        
+
         first = pair.first;
         second = pair.second;
-        
+
         first = tempFirst;
         second = tempSecond;
-        
+
         *this;
     }
 };
@@ -115,10 +103,10 @@ template<class T1, class T2>
 void swap(Pair<T1, T2>& pairOne, Pair<T1, T2>& pairTwo) {
     T1 tempFirst = pairOne.first;
     T2 tempSecond = pairOne.second;
-    
+
     pairOne.first = pairTwo.first;
     pairOne.second = pairTwo.second;
-    
+
     pairTwo.first = tempFirst;
     pairTwo.second = tempSecond;
 }
@@ -130,7 +118,7 @@ public:
     TupleStorageUnique(T t) {
         this->data = t;
     }
-    
+
     T get();
 };
 
@@ -171,7 +159,7 @@ public:
     Tuple(Ts... ts): TupleStorage<0, Ts...>(ts...) {
         std::cout << "Ctor 2" << std::endl;
     }
-    
+
     ~Tuple() {
     }
 };
@@ -186,4 +174,4 @@ public:
 
 } /* namespace ostl */
 
-#endif /* stl_hpp */
+#endif /* tuple_hpp */

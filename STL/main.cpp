@@ -8,12 +8,16 @@
 
 #include <iostream>
 #include <utility>
-
 #include <vector>
 #include <string>
 
-#include "stl.hpp"
-//#include <tuple>
+// TODO: Potentially change references (&) to rvalue references (&&)
+// TODO: Delete prints
+
+// TODO: Check that every functions are in sync with C++11
+// TODO: Change the way I initialize paramaeters in the constructor
+
+#include "tuple.hpp"
 
 int main(int argc, const char * argv[]) {
     
@@ -37,6 +41,6 @@ int main(int argc, const char * argv[]) {
     std::cout << ostl::get<5>(t11) << std::endl;
 
     ostl::Tuple<int> d(1);
-    std::cout << "Hello, World!\n";
+    
     return 0;
 }
