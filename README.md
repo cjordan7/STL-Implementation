@@ -1,3 +1,3 @@
 
-# Implementation of several container of the STL library
+# Implementation of several containers of the STL library
 
