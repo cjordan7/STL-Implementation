@@ -32,7 +32,7 @@ Now let's talk about the functions that can be accessed through the public API.
 
 ### Vector (in vector.hpp)
 
-Here's a list of implemented functions for the `Vector`.
+Here's a list of implemented functions for the class `Vector`.
 
 * `Vector()`
   
@@ -169,19 +169,31 @@ Here's a list of implemented functions for the `Vector`.
 
 ### Queue (in queue.hpp)
 
+Here's a list of implemented functions for the class `Queue`.
+
 ### Deque (in deque.hpp)
+
+Here's a list of implemented functions for the class `Deque`.
 
 ### Set (in set.hpp)
 
+Here's a list of implemented functions for the class `Set`.
+
 ### List (in list.hpp)
+
+Here's a list of implemented functions for the class `List`.
 
 ### Tuple (in tuple.hpp)
 
+Here's a list of implemented functions for the class `Tuple`.
+
 ### UnorderedMap (in map.hpp)
+
+Here's a list of implemented functions for the class `UnorderedMap`.
 
 ### Stack (in stack.hpp)
 
-Here's a list of implemented functions for the `Stack`.
+Here's a list of implemented functions for the class `Stack`.
 
 * `Stack()`
 
