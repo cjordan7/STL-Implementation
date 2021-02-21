@@ -8,6 +8,11 @@ The namespace is `ostl` which stands for  *my Own STL*
 
 ## About the Project
 
+My primary goal for this project was to gain a better understanding of the STL. My
+second goal was to practice template programming. For developing the container
+`Tuple`, I've used a lot of template concepts and tools, such as variadic templates,
+parameter packs, unpacking, specialization and more.
+
 In this project, I implemented several containers of the STL, namely:
 
 ```
