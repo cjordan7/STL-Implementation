@@ -28,7 +28,7 @@ Stack
 
 ## The public API
 
-Now let's talk about the functions that can be accessed.
+Now let's talk about the functions that can be accessed through the public API.
 
 ### Vector (in vector.hpp)
 
