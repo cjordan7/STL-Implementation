@@ -181,7 +181,6 @@ Here's a list of implemented functions for the `Stack`.
 * `Stack()`
 * `Stack(Stack<T> const& stack)`
 * `Stack(size_t size)`
-* `~Stack()`
 * `bool empty() const`
 * `void push(T& t)`
 * `void push(const T& t)`
