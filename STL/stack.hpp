@@ -41,7 +41,6 @@ public:
         return vector.empty();
     }
 
-
     void push(T& t) {
         vector.pushBack(t);
     }
