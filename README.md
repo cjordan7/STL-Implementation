@@ -25,7 +25,7 @@ Stack
 
 Now let's talk a little about the functions that can be publicly accessed.
 
-### Vector (in vector.h)
+### Vector (in vector.hpp)
 
 Here's a list of implemented functions for the `Vector`.
 
@@ -161,3 +161,32 @@ Here's a list of implemented functions for the `Vector`.
 * `void clear() noexcept`
 
     Reset the vector.
+
+### Queue (in queue.hpp)
+
+### Deque (in deque.hpp)
+
+### Set (in set.hpp)
+
+### List (in list.hpp)
+
+### Tuple (in tuple.hpp)
+
+### UnorderedMap (in map.hpp)
+
+### Stack (in stack.hpp)
+
+Here's a list of implemented functions for the `Stack`.
+
+* `Stack()`
+* `Stack(Stack<T> const& stack)`
+* `Stack(size_t size)`
+* `~Stack()`
+* `bool empty() const`
+* `void push(T& t)`
+* `void push(const T& t)`
+* `T& top()`
+* `const T& top() const`
+* `void pop()`
+* `unsigned long long size() const`
+* `void swap(Stack& stack) noexcept`

@@ -62,7 +62,7 @@ public:
         vector.popBack();
     }
 
-    unsigned long long size() {
+    unsigned long long size() const {
         return vector.size();
     }
 
