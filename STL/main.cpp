@@ -19,15 +19,7 @@
 
 #include "tuple.hpp"
 #include "vector.hpp"
-
-template<class T>
-void printVector(const ostl::Vector<T>& vector) {
-    for(int i = 0; i < vector.size(); ++i) {
-        std::cout << vector[i] << " ";
-    }
-
-    std::cout << std::endl;
-}
+#include "stack.hpp"
 
 int main(int argc, const char * argv[]) {
     return 0;

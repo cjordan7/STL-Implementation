@@ -179,13 +179,45 @@ Here's a list of implemented functions for the `Vector`.
 Here's a list of implemented functions for the `Stack`.
 
 * `Stack()`
+
+    Create an empty stack.
+    
 * `Stack(Stack<T> const& stack)`
+
+    Copy a stack into the current one.
+
 * `Stack(size_t size)`
+
+    Create a stack of size `size`.
+    
 * `bool empty() const`
+
+    Return wether the stack is empty or not.
+    
 * `void push(T& t)`
+
+    Push an element onto the stack.
+
 * `void push(const T& t)`
+
+    Push an const element onto the stack.
+    
 * `T& top()`
+
+    Get the top element of the stack.
+
 * `const T& top() const`
+
+    Get the top element of the stack.
+
 * `void pop()`
+  
+  Pop the stack.
+    
 * `unsigned long long size() const`
+
+    Get the size of the stack.
+    
 * `void swap(Stack& stack) noexcept`
+
+    Swap two stacks

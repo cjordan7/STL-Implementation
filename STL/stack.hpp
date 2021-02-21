@@ -37,7 +37,7 @@ public:
     ~Stack() {
     }
 
-    bool empty() const {
+    bool empty() {
         return vector.empty();
     }
 
@@ -51,7 +51,7 @@ public:
     }
 
     T& top() {
-        return vector[vector.size()-1];
+        return vector[int(vector.size())-1];
     }
 
     const T& top() const {
