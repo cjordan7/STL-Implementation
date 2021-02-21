@@ -34,7 +34,8 @@ Here's a list of implemented functions for the `Vector`.
   Create a vector with size zero.
 
 * `Vector(size_t size)`
-  Create a vector with size `size`.
+
+    Create a vector with size `size`.
 
 * `Vector(T ts[], size_t size)`
 
@@ -102,8 +103,8 @@ Here's a list of implemented functions for the `Vector`.
     Returns the last element of the vector.
     
 * `const T& back() const`
-
-      Returns a constant to the last element of the vector.
+  
+  Returns a constant to the last element of the vector.
 
 
 * `T& operator[](int i)`
