@@ -157,7 +157,6 @@ template<class... Ts>
 class Tuple: public TupleStorage<0, Ts...>  {
 public:
     Tuple(Ts... ts): TupleStorage<0, Ts...>(ts...) {
-        std::cout << "Ctor 2" << std::endl;
     }
 
     ~Tuple() {
@@ -168,7 +167,6 @@ template<class T>
 class Tuple<T>: public TupleStorageUnique<0, T> {
 public:
     Tuple(T t): TupleStorageUnique<0, T>(t) {
-        std::cout << "Ctor 1" << std::endl;
     }
 };
 

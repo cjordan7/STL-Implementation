@@ -21,7 +21,7 @@ public:
     typedef T* Iterator;
 
 private:
-    T* ts;
+    T* ts = nullptr;
     unsigned long long sizeV;
     unsigned long long memorySize;
 
@@ -35,33 +35,41 @@ public:
         ts = new T[size];
         this->sizeV = size;
         memorySize = size;
+
+        for(int i = 0; i < size; ++i) {
+            this->ts[i] = 0;
+        }
     }
 
-    Vector(T ts[]) {
-        size_t size = sizeof(ts);
+    Vector(T ts[], size_t size) {
         this->ts = new T[size];
 
         this->sizeV = size;
         memorySize = size;
 
         for(int i = 0; i < size; ++i) {
-            this->ts = ts[i];
+            this->ts[i] = ts[i];
         }
     }
 
-    Vector(Vector<T>& t) {
-        this->Vector(t.ts);
+    Vector(Vector<T>& t): Vector(t.ts, t.size()) {
     }
 
     ~Vector() {
-        delete ts;
+        if(ts != nullptr) {
+            delete ts;
+        }
     }
 
     Vector<T>& operator=(const Vector<T>& rhs) {
         sizeV = rhs.sizeV;
         memorySize = rhs.memorySize;
 
-        delete ts;
+        //std::cerr << "....\n" << std::endl;
+
+        if(ts != nullptr) {
+            delete ts;
+        }
 
         ts = new T[memorySize];
 
@@ -73,7 +81,19 @@ public:
     }
 
     Vector<T>& operator=(Vector<T>&& vector) {
-        *this = vector;
+        sizeV = vector.sizeV;
+        memorySize = vector.memorySize;
+
+        if(ts != nullptr) {
+            delete ts;
+        }
+
+        ts = new T[memorySize];
+
+        for(int i = 0; i < sizeV; ++i) {
+            ts[i] = vector[i];
+        }
+
         return *this;
     }
 
@@ -81,7 +101,9 @@ public:
         sizeV = il.size();
         memorySize = sizeV;
 
-        delete ts;
+        if(ts != nullptr) {
+            delete ts;
+        }
 
         ts = new T[memorySize];
 
@@ -91,7 +113,6 @@ public:
 
         return *this;
     }
-
 
     void reserve(size_t memorySize) {
         ts = new T[memorySize];
@@ -119,7 +140,7 @@ public:
 
     const T& at(unsigned long long i) const {
         testOutOfBounds(i);
-        return at(i);
+        return ts[i];
     }
 
     T& front() {
@@ -135,7 +156,7 @@ public:
     }
 
     const T* data() const noexcept {
-        return data();
+        return ts;
     }
 
     void swap(Vector& vector) {
@@ -147,12 +168,13 @@ public:
         vector.sizeV = sizeV;
         vector.memorySize = memorySize;
 
+        ts = temp;
         sizeV = sizeVTemp;
         memorySize = memorySizeTemp;
     }
 
     T& back() {
-        return ts[sizeV];
+        return ts[sizeV-1];
     }
 
     const T& back() const {
@@ -167,7 +189,7 @@ public:
         return ts[i];
     }
 
-    void pushBack(T t) {
+    void pushBack(T&& t) {
         reallocOnTest(memorySize);
 
         ts[sizeV++] = t;
@@ -189,11 +211,11 @@ public:
         return sizeV == 0;
     }
 
-    unsigned long long size() {
+    unsigned long long size() const {
         return sizeV;
     }
 
-    unsigned long long capacity() {
+    unsigned long long capacity() const {
         return memorySize;
     }
 
@@ -218,6 +240,7 @@ public:
 
     Iterator erase(const Iterator position) {
         Iterator previous = position-1;
+
         for(Iterator i = position+1; i != end(); ++i) {
             *(i-1) = *i;
         }
@@ -230,35 +253,33 @@ public:
 
     Iterator erase(const Iterator first, const Iterator last) {
         unsigned long long size = 0;
-        Iterator previous = first-1;
         for(Iterator i = first; i != last; ++i) {
             ++size;
         }
 
-        T* newTs = new T[sizeV-size];
-
+        T* newTs = new T[memorySize];
         Iterator newIt = newTs;
 
         for(Iterator i = begin(); i != first; ++i, ++newIt) {
             *newIt = *i;
         }
 
-        newIt = last;
-
+        Iterator point = newIt;
         for(Iterator i = last; i != end(); ++i, ++newIt) {
             *newIt = *i;
         }
 
         delete ts;
-
+        this->sizeV = this->sizeV - size;
         ts = newTs;
 
         // TODO: Check that using the documentation
-        return ++previous;
+        return point;
     }
 
     void clear() noexcept {
         delete ts;
+        ts = nullptr;
 
         createNewVector();
     }
@@ -296,7 +317,7 @@ private:
     }
 
     void testOutOfBounds(unsigned long long i) {
-        if(i > sizeV) {
+        if(i >= sizeV) {
             throw std::out_of_range("Out of bounds");
         }
     }
