@@ -18,11 +18,16 @@ namespace ostl {
 template<class T>
 class Vector {
 public:
+    // The iterator is a pointer to the element of the c-array
     typedef T* Iterator;
 
 private:
     T* ts = nullptr;
+
+    // Actual size in memory
     unsigned long long sizeV;
+
+    // Full size of memory
     unsigned long long memorySize;
 
 public:
@@ -36,6 +41,7 @@ public:
         this->sizeV = size;
         memorySize = size;
 
+        // Initialize to zero
         for(int i = 0; i < size; ++i) {
             this->ts[i] = 0;
         }
@@ -47,6 +53,7 @@ public:
         this->sizeV = size;
         memorySize = size;
 
+        // Copy c-array
         for(int i = 0; i < size; ++i) {
             this->ts[i] = ts[i];
         }
@@ -62,10 +69,9 @@ public:
     }
 
     Vector<T>& operator=(const Vector<T>& rhs) {
+        // Copy variables
         sizeV = rhs.sizeV;
         memorySize = rhs.memorySize;
-
-        //std::cerr << "....\n" << std::endl;
 
         if(ts != nullptr) {
             delete ts;
@@ -73,6 +79,7 @@ public:
 
         ts = new T[memorySize];
 
+        // Copy array
         for(int i = 0; i < sizeV; ++i) {
             ts[i] = rhs[i];
         }
@@ -246,7 +253,6 @@ public:
         }
         --sizeV;
 
-        // TODO: Check that using the documentation
         ++previous;
         return previous;
     }
@@ -260,20 +266,26 @@ public:
         T* newTs = new T[memorySize];
         Iterator newIt = newTs;
 
+        // Set the elements before the iterator first
         for(Iterator i = begin(); i != first; ++i, ++newIt) {
             *newIt = *i;
         }
 
+        // What we return
         Iterator point = newIt;
+
+        // Set the elements after the iterator last
         for(Iterator i = last; i != end(); ++i, ++newIt) {
             *newIt = *i;
         }
 
+        // Reset ts
         delete ts;
-        this->sizeV = this->sizeV - size;
         ts = newTs;
 
-        // TODO: Check that using the documentation
+        // New size, we have deleted size elements
+        this->sizeV = this->sizeV - size;
+
         return point;
     }
 
@@ -301,13 +313,11 @@ private:
             tsNew[i] = ts[i];
         }
 
-        // FIXME TODO Check if ts null
         delete ts;
 
         ts = tsNew;
     }
 
-    // FIXME: REFACTOR THAT
     void reallocOnTest(unsigned long long size) {
         if(sizeV == size) {
             size *= 2;
