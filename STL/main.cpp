@@ -20,7 +20,10 @@
 #include "tuple.hpp"
 #include "vector.hpp"
 #include "stack.hpp"
+#include "list.hpp"
+#include "deque.hpp"
 
 int main(int argc, const char * argv[]) {
+
     return 0;
 }

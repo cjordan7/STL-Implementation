@@ -25,10 +25,10 @@ private:
     T* ts = nullptr;
 
     // Actual size in memory
-    unsigned long long sizeV;
+    unsigned long long sizeV = 0;
 
     // Full size of memory
-    unsigned long long memorySize;
+    unsigned long long memorySize = 0;
 
 public:
 

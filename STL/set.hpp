@@ -19,10 +19,6 @@ namespace ostl {
 template<class T, class Comparator = std::less<T>>
 class Set {
 private:
-    struct IteratorValue;
-
-public:
-    typedef IteratorValue* Iterator;
 
 private:
     Comparator compare;
@@ -35,34 +31,33 @@ private:
 
     Node* root;
 
-    class IteratorValue {
+    class Iterator {
         friend class Set;
     private:
-        Iterator it;
         Node* node;
     public:
 
-        IteratorValue(Node* n) {
+        Iterator(Node* n) {
             node = n;
         }
 
-        IteratorValue &operator++() {
+        Iterator &operator++() {
 
         }
 
-        IteratorValue operator++(int) {
+        Iterator operator++(int) {
 
         }
 
-        IteratorValue& operator--() {
+        Iterator& operator--() {
 
         }
 
-        IteratorValue operator--(int) {
+        Iterator operator--(int) {
 
         }
 
-        IteratorValue operator+=(const int& right) {
+        Iterator operator+=(const int& right) {
 
         }
     };

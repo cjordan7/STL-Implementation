@@ -72,7 +72,7 @@ Here's a list of implemented functions for the class `Vector`.
 * `void shrinkToFit()`
 
     Resize the vector memory size to be equal to the size of the vector.
-
+    
 * `T& at(unsigned long long i)`
   
   Access the element at index `i`. An exception is thrown if the index is out of
@@ -101,7 +101,7 @@ Here's a list of implemented functions for the class `Vector`.
 
 * `void swap(Vector& vector)`
 
-    Swap both vectors
+    Swap both vectors.
     
 * `T& back()`
 
@@ -142,11 +142,11 @@ Here's a list of implemented functions for the class `Vector`.
   
 * `unsigned long long capacity() const`
 
-    Return the capacity of the vector
+    Return the capacity of the vector.
     
 * `Iterator insert(const Iterator position, const T& t)`
 
-    Insert an element at the `position` specified by the `Iterator`
+    Insert an element at the `position` specified by the `Iterator`.
     
 * `Iterator begin()`
 
@@ -175,6 +175,141 @@ Here's a list of implemented functions for the class `Queue`.
 
 Here's a list of implemented functions for the class `Deque`.
 
+* `Deque()`
+
+    Create an empty deque.
+    
+* `Deque(size_t size)`
+
+    Create a deque with size `size`.
+    
+* `Deque(Deque<T> const& deque)`
+
+    Copy a deque.
+    
+* `Deque<T>& operator=(const Deque& deque)`
+
+    Assign a deque.
+
+* `Deque<T>& operator=(Deque&& deque)`
+
+    Assign a deque.
+    
+* `Deque<T>& operator=(std::initializer_list<T> il)`
+
+    Assign an initializer list to a deque.
+    
+* `Iterator begin() noexcept`
+
+    Return an iterator to the begining of the list.
+
+* `const Iterator begin() const noexcept`
+
+    Return an iterator to the begining of the list.
+    
+* `Iterator end() noexcept`
+
+    Return an iterator to the en of the list.
+
+* `const Iterator end() const noexcept`
+
+    Return an iterator to the en of the list.
+    
+* `unsigned long long size() const noexcept`
+
+    Return the size of the deque.
+
+* `void resize(unsigned long long size)`
+
+    Resize the deque.
+
+* `T& at(unsigned long long i)`
+
+    Get an the element at the index i of the deque. It sends an exception if it
+    fails.
+
+* `const T& at(unsigned long long i) const`
+
+    Get an the element at the index i of the deque. It sends an exception if it
+    fails.
+    
+* `bool empty() const noexcept`
+
+    Returns whether the deque is empty.
+    
+* `void shrinkToFit()`
+
+    Reduce the memory size to the actual size of the deque.
+    
+* `T& operator[](int i)`
+
+    Get an the element at the index i of the deque.
+
+* `const T& operator[](int i) const`
+
+    Get an the element at the index i of the deque.
+
+* `T& front()`
+
+    Get the first element of the deque.
+    
+* `const T& front() const`
+
+    Get the first element of the deque.
+    
+* `T& back()`
+
+    Get the last element of the deque.
+
+* `const T& back() const`
+
+    Get the last element of the deque.
+    
+* `void pushBack(const T& t)`
+
+    Add an element to the end of the deque.
+
+* `void pushBack(T&& t)`
+
+    Add an element to the end of the deque.
+    
+* `void pushFront(const T& t)`
+
+    Add an element to the begining of the deque.
+    
+* `void pushFront(T&& t)`
+
+    Add an element to the begining of the deque.
+    
+* `void popBack()`
+
+    Delete the end element of the deque.
+    
+* `void popFront()`
+
+    Delete the first element of the deque.
+    
+* `Iterator insert(const Iterator position, const T& t)`
+
+    Add an element at `position`.
+    
+* `Iterator erase(const Iterator position)`
+
+    Delete an element at `position`.
+
+* `Iterator erase(const Iterator first, const Iterator last)`
+
+    Delete elements between `first` and t `last`.
+    
+* `void swap(Deque& deque)`
+
+    Swap deque with self.
+    
+* `void clear() noexcept`
+  
+  Clear the memory of the deque.
+
+
 ### Set (in set.hpp)
 
 Here's a list of implemented functions for the class `Set`.
@@ -182,6 +317,79 @@ Here's a list of implemented functions for the class `Set`.
 ### List (in list.hpp)
 
 Here's a list of implemented functions for the class `List`.
+
+* `List()`
+
+    Create an empty list.
+    
+* `List(List<T> const& List)`
+
+    Copy a list.
+
+* `Iterator begin()`
+
+    Returns an iterator to the begining of the list.
+
+* `Iterator end()`
+
+    Returns an iterator to the end of the list.
+
+* `const Iterator cbegin() const noexcept`
+
+    Returns a constant iterator to the begining of the list.
+
+* `const Iterator cend() const noexcept`
+
+    Returns a constant iterator to the end of the list.
+
+* `void pushFront(const T& t)`
+
+    Push a new element to the list.
+
+* `void pushFront(T&& t)`
+
+    Push a new element to the list.
+
+* `void pushFront(T data)`
+
+    Push a new element to the list.
+    
+* `T& front()`
+
+    Get the front element of the list.
+
+* `const T& front() const`
+
+    Get the front element of the list.
+
+* `T& back()`
+
+    Get the back element of the list.
+
+* `const T& back() const`
+
+    Get the back element of the list.
+
+* `void pushBack(T data)`
+  
+  Add an element at the end of the list.
+
+* `void popFront()`
+
+    Delete an element at the begining of the list.
+    
+* `void popBack()`
+
+    Delete an element at the end of the list.
+    
+* `unsigned long long size()`
+
+    Returns the size of the list.
+
+* `bool empty() const noexcept`
+
+    Check if the list is empty. Or in other words, if the size is zero.
+
 
 ### Tuple (in tuple.hpp)
 
@@ -237,4 +445,4 @@ Here's a list of implemented functions for the class `Stack`.
     
 * `void swap(Stack& stack) noexcept`
 
-    Swap two stacks
+    Swap two stacks.

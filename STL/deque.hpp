@@ -28,6 +28,10 @@ public:
         vector = Vector<T>();
     }
 
+    Deque(size_t size) {
+        vector = Vector<T>(size);
+    }
+
     Deque(Deque<T> const& deque) {
         *this = deque;
     }
@@ -48,12 +52,36 @@ public:
         return *this;
     }
 
+    Iterator begin() noexcept {
+        return vector.begin();
+    }
+
+    const Iterator begin() const noexcept {
+        return vector.at(0);
+    }
+
+    Iterator end() noexcept {
+        return vector.end();
+    }
+
+    const Iterator end() const noexcept {
+        return vector.at(vector.size());
+    }
+
     unsigned long long size() const noexcept {
         return vector.size();
     }
 
     void resize(unsigned long long size) {
         vector.resize(size);
+    }
+
+    T& at(unsigned long long i) {
+        return vector.at(i);
+    }
+
+    const T& at(unsigned long long i) const {
+        return vector.at(i);
     }
 
     bool empty() const noexcept {
