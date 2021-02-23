@@ -63,7 +63,7 @@ public:
     }
 
     void pop() {
-        deque.popBack();
+        deque.popFront();
     }
 
     void swap(Queue& queue) noexcept {

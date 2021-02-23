@@ -214,7 +214,7 @@ public:
         }
     }
 
-    bool empty() {
+    bool empty() const noexcept {
         return sizeV == 0;
     }
 

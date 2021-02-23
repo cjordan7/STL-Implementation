@@ -171,6 +171,54 @@ Here's a list of implemented functions for the class `Vector`.
 
 Here's a list of implemented functions for the class `Queue`.
 
+* `Queue()`
+
+    Create an empty queue.
+    
+* `Queue(Queue<T> const& queue)`
+
+    Create a queue by copying it.
+    
+* `unsigned long long size() const`
+
+    Returns the size of the queue.
+    
+* `bool empty() const`
+
+    Check whether the queue is empty or not.
+    
+* `T& front()`
+
+    Returns the "oldest" element inserted in the queue.
+    
+* `const T& front() const`
+
+    Returns the "oldest" element inserted into the queue.
+    
+* `T& back()`
+
+    Returns the "newest" element inserted into the queue.
+
+* `const T& back() const`
+
+    Returns the "newest" element inserted into the queue.
+    
+* `void push(const T& t)`
+
+    Push a new element into the queue.
+
+* `void push(T&& t)`
+
+    Push a new element into the queue.
+    
+* `void pop()`
+
+    Delete the "oldest" element of the queue.
+
+* `void swap(Queue& queue) noexcept`
+
+    Swap two queues.
+
 ### Deque (in deque.hpp)
 
 Here's a list of implemented functions for the class `Deque`.

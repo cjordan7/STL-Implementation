@@ -22,8 +22,8 @@
 #include "stack.hpp"
 #include "list.hpp"
 #include "deque.hpp"
+#include "queue.hpp"
 
 int main(int argc, const char * argv[]) {
-
     return 0;
 }

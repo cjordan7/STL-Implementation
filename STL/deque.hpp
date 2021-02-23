@@ -109,7 +109,7 @@ public:
     }
 
     T& back() {
-        return vector[vector.size()-1];
+        return vector[(int)vector.size()-1];
     }
 
     const T& back() const {
