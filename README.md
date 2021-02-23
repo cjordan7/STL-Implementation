@@ -443,6 +443,18 @@ Here's a list of implemented functions for the class `List`.
 
 Here's a list of implemented functions for the class `Tuple`.
 
+* `Tuple(Ts... ts)`
+
+    Create a tuple.
+    
+    Example: `ostl::Tuple<int, std::string> tuple(42, "My Own STL")`
+
+* `T& get`
+
+    Get the element of a tuple
+
+    Example to get "My Own STL" from the example above. Use: `ostl::get<1>(tuple)`
+
 ### UnorderedMap (in map.hpp)
 
 Here's a list of implemented functions for the class `UnorderedMap`.

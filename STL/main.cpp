@@ -25,5 +25,9 @@
 #include "queue.hpp"
 
 int main(int argc, const char * argv[]) {
+    ostl::Tuple<int, std::string> t(42, "My Own STL");
+
+    std::cout << ostl::get<0>(t) << std::endl;
+    std::cout << ostl::get<1>(t) << std::endl;
     return 0;
 }

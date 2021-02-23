@@ -133,22 +133,22 @@ T const& get(TupleStorageUnique<N, T> const& tupleStorage) {
 }
 
 template<size_t I, class T, class... Ts>
-class TupleStorage: public TupleStorageUnique<I+1, T>, public TupleStorage<I+1, Ts...>  {
+class TupleStorage: public TupleStorageUnique<I, T>, public TupleStorage<I+1, Ts...>  {
 public:
     T data;
     TupleStorage(T t): TupleStorageUnique<I+1, T>(t) {
 
     }
 
-    TupleStorage(T t, Ts... ts): TupleStorageUnique<I+1, T>(t), TupleStorage<I+1, Ts...>(ts...) {
+    TupleStorage(T t, Ts... ts): TupleStorageUnique<I, T>(t), TupleStorage<I+1, Ts...>(ts...) {
         this->data = t;
     }
 };
 
 template<size_t I, class T1, class T2>
-class TupleStorage<I, T1, T2>: public TupleStorageUnique<I+1, T1>, public TupleStorageUnique<I+2, T2> {
+class TupleStorage<I, T1, T2>: public TupleStorageUnique<I, T1>, public TupleStorageUnique<I+1, T2> {
 public:
-    TupleStorage(T1 t1, T2 t2): TupleStorageUnique<I+1, T1>(t1), TupleStorageUnique<I+2, T2>(t2) {
+    TupleStorage(T1 t1, T2 t2): TupleStorageUnique<I, T1>(t1), TupleStorageUnique<I+1, T2>(t2) {
 
     }
 };
