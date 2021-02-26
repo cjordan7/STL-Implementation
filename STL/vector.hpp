@@ -63,9 +63,7 @@ public:
     }
 
     ~Vector() {
-        if(ts != nullptr) {
-            delete ts;
-        }
+        delete ts;
     }
 
     Vector<T>& operator=(const Vector<T>& rhs) {
@@ -73,9 +71,7 @@ public:
         sizeV = rhs.sizeV;
         memorySize = rhs.memorySize;
 
-        if(ts != nullptr) {
-            delete ts;
-        }
+        delete ts;
 
         ts = new T[memorySize];
 
@@ -91,9 +87,7 @@ public:
         sizeV = vector.sizeV;
         memorySize = vector.memorySize;
 
-        if(ts != nullptr) {
-            delete ts;
-        }
+        delete ts;
 
         ts = new T[memorySize];
 
@@ -108,9 +102,7 @@ public:
         sizeV = il.size();
         memorySize = sizeV;
 
-        if(ts != nullptr) {
-            delete ts;
-        }
+        delete ts;
 
         ts = new T[memorySize];
 

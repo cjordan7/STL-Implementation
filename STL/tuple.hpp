@@ -18,6 +18,10 @@ template<int x, class T>
 struct PairStorage {
     T data;
 
+    PairStorage() {
+//        this->data = t;
+    }
+
     PairStorage(T t) {
         this->data = t;
     }

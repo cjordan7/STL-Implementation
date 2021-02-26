@@ -459,6 +459,86 @@ Here's a list of implemented functions for the class `Tuple`.
 
 Here's a list of implemented functions for the class `UnorderedMap`.
 
+* `UnorderedMap()`
+
+    Create an empty map.
+
+* `UnorderedMap(std::initializer_list<ostl::Pair<K, V>> il)`
+
+    Create a map with an initializer list.
+
+* `UnorderedMap& operator=(const UnorderedMap& x)`
+
+    Assign an initializer map to the map.
+
+* `UnorderedMap& operator=(UnorderedMap&& x)`
+
+    Assign an initializer map to the map.
+
+* `UnorderedMap& operator=(std::initializer_list<ostl::Pair<K, V>> il)`
+
+    Assign an initializer list to the map.
+
+* `void clear() noexcept`
+
+    Clear the content of the map.
+
+* `const Iterator cbegin() const noexcept`
+
+  Return an iterator to the begining of the map.
+
+* `const Iterator cend() const noexcept`
+
+  Return an iterator to the end of the map.
+
+* `Iterator begin()`
+
+  Return an iterator to the begining of the map.
+
+* `const Iterator begin() const`
+  
+  Return an iterator to the begining of the map.
+
+* `Iterator end()`
+
+    Returns an iterator to the end of the map.
+
+* `const Iterator end() const`
+
+    Returns an iterator to the end of the map.
+
+* `V& at(const K& key)`
+
+    Get the value at the key.
+
+* `Iterator erase(const Iterator position)`
+
+    Delete the element at the iterator position.
+
+* `V& operator[](const K& k)`
+
+    Get the value at the key k.
+
+* `V& operator[](K&& k)`
+
+    Get the value at the key k.
+
+* `const V& at(const K& key) const`
+
+    Get the value at the key k.
+
+* `bool empty() const`
+
+    Returns wether the map is empty or not.
+
+* `void remove(const K& key)`
+
+    Remove the key k.
+
+* `unsigned long long size`
+
+    Return the size of the map.
+
 ### Stack (in stack.hpp)
 
 Here's a list of implemented functions for the class `Stack`.
