@@ -362,6 +362,74 @@ Here's a list of implemented functions for the class `Deque`.
 
 Here's a list of implemented functions for the class `Set`.
 
+* `Set()`
+
+    Create empty set.
+    
+* `Set(std::initializer_list<T> il)`
+
+    Create set using initializer list.
+    
+* `void clear() noexcept`
+
+    Clear memory of list.
+    
+* `Iterator begin()`
+
+    Return iterator to begining of list.
+    
+* `const Iterator cbegin() const noexcep`
+
+    Return iterator to the begining of list.
+    
+* `Iterator end() noexcept`
+
+    Return iterator to the end of list.
+
+* `const Iterator cend() const noexcep`
+
+    Return iterator to the end of list.
+    
+* `bool empty() const`
+
+    Returns wether the list is empty or not.
+    
+* `void insert(const T& data)`
+
+    Insert data.
+    
+* `Iterator insert(Iterator position, const T& data)`
+
+    Insert data at position.
+    
+* `void insert(Iterator first, Iterator last)`
+
+    Insert elements between first and last.
+    
+* `Iterator erase(Iterator position)`
+
+    Delete element at position.
+    
+* `unsigned long long erase(const T& data)`
+
+    Erase data.
+    
+* `Iterator erase(Iterator first, Iterator last)`
+
+    Erase element between first and last.
+    
+* `void swap(Set& set)`
+
+    Swap set and this.
+    
+* `Iterator find(const T& data) cons`
+
+    Returns iterator to data.
+    
+* `unsigned long long size()`
+
+    Returns the size of the list.
+
 ### List (in list.hpp)
 
 Here's a list of implemented functions for the class `List`.
@@ -369,7 +437,11 @@ Here's a list of implemented functions for the class `List`.
 * `List()`
 
     Create an empty list.
-    
+
+* `List(std::initializer_list<T> il)`
+
+    Create list using an initializer list.
+
 * `List(List<T> const& List)`
 
     Copy a list.
@@ -390,15 +462,15 @@ Here's a list of implemented functions for the class `List`.
 
     Returns a constant iterator to the end of the list.
 
+* `void clear() noexcept`
+  
+  Clear memory of list.
+
 * `void pushFront(const T& t)`
 
     Push a new element to the list.
 
 * `void pushFront(T&& t)`
-
-    Push a new element to the list.
-
-* `void pushFront(T data)`
 
     Push a new element to the list.
     

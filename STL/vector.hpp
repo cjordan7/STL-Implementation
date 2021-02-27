@@ -229,6 +229,7 @@ public:
 
         return position;
     }
+
     Iterator begin() {
         return ts;
     }

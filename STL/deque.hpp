@@ -56,7 +56,7 @@ public:
         return vector.begin();
     }
 
-    const Iterator begin() const noexcept {
+    const Iterator cbegin() const noexcept {
         return vector.at(0);
     }
 
@@ -64,7 +64,7 @@ public:
         return vector.end();
     }
 
-    const Iterator end() const noexcept {
+    const Iterator cend() const noexcept {
         return vector.at(vector.size());
     }
 

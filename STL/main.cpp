@@ -24,6 +24,7 @@
 #include "deque.hpp"
 #include "queue.hpp"
 #include "map.hpp"
+#include "set.hpp"
 
 int main(int argc, const char * argv[]) {
     return 0;
